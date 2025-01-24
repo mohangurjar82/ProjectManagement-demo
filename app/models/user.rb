@@ -9,6 +9,7 @@ class User < ApplicationRecord
 
   validates :email, presence: true, uniqueness: true
   validates :password, length: { minimum: 6 }
+  validates :role
   before_create :set_uuid
 
   private
