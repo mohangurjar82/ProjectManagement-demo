@@ -38,32 +38,29 @@ class Api::V1::ProjectsController < ApplicationController
   end
 
   def active
-    @projects = Project.where(
-                              "start_date <= ? AND (start_date + 
-                              CASE 
-                                WHEN duration_timeframe = 'day' THEN (duration_day * interval '1 day')
-                                WHEN duration_timeframe = 'week' THEN (duration_day * interval '1 week')
-                                WHEN duration_timeframe = 'month' THEN (duration_day * interval '1 month')
-                                ELSE interval '0' 
-                              END) >= ?", 
-                              Date.today, Date.today
-                            )
+    @projects = Project.active
     render json: @projects
   end
-
-
 
   def assign_user
     project = Project.find(params[:project_id])
     user = User.find(params[:user_id])
+
+    # Assuming you have `current_user` representing the admin or the assigner
+    assigned_by = user
+
     # Check if user is already assigned to this project
-    unless project.users.include?(user)
-      project.users << user
-      render json: { message: "User assigned to project successfully" }
-    else
+    if project.users.include?(user)
       render json: { error: "User is already assigned to this project" }, status: :unprocessable_entity
+    else
+      project.assignments.create!(
+        user: user,
+        assigned_by: assigned_by
+      )
+      render json: { message: "User assigned to project successfully" }
     end
   end
+
 
   def task_breakdown
     tasks = @project.tasks

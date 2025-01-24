@@ -27,6 +27,6 @@ module ProjectManagementApi
     config.default_url_options = { host: 'localhost', port: 3000 }
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
-
+    config.autoload_paths << Rails.root.join('lib')
   end
 end

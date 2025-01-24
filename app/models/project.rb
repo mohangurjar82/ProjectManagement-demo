@@ -3,13 +3,14 @@ class Project < ApplicationRecord
   has_many :assignments
   has_many :users, through: :assignments
   before_create :set_uuid
+  scope :active, -> { where('start_date <= ? AND start_date + duration_day >= ?', Date.today, Date.today) }
 
   def active?
     start_date <= Date.today && end_date >= Date.today
   end
   
   def end_date
-    start_date + duration.days
+    start_date + duration_day.days
   end
 
   private
