@@ -26,11 +26,18 @@ Things you may want to cover:
 Project Setup
 
 Clone the repo
-Install dependencies: bundle install 
-Set up the database: rails db:create db:migrate db:seed
-Start the Rails server: rails s
-API Endpoints Documentation
+git clone https://github.com/mohangurjar82/ProjectManagement-demo.git
 
-GET /api/projects: List active projects
-POST /api/projects/:project_id/assign: Assign project to user
-POST /api/tasks: Add task to an active project
+cd path/to/project
+
+Install dependencies: bundle install
+
+Set up your database.yml file according to your credential
+
+#After set up Run
+
+rails db:create
+rails db:migrate
+rails db:seed
+
+Start the Rails server: rails s
