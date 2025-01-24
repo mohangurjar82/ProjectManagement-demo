@@ -24,7 +24,6 @@ Things you may want to cover:
 * ...
 
 ## Project Setup
-
 Ruby version          - rvm install '2.5.7'
 
 Rails version         - gem install rails '6.0.6'
