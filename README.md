@@ -40,4 +40,4 @@ rails db:create
 rails db:migrate
 rails db:seed
 
-Start the Rails server: rails s
+Start the Rails server: rails s -p 3001

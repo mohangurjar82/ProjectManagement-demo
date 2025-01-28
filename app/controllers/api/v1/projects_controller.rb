@@ -75,7 +75,6 @@ class Api::V1::ProjectsController < ApplicationController
     end
   end
 
-
   def task_breakdown
     tasks = @project.tasks
     task_summary = tasks.map do |task|
