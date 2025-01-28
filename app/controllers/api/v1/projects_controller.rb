@@ -38,8 +38,8 @@ class Api::V1::ProjectsController < ApplicationController
   end
 
   def active
-    @projects = Project.active
-    render json: @projects
+    @projects = Project.active.includes(:users)
+    render json: @projects, include: [:users]
   end
 
   def assign_user
@@ -61,6 +61,20 @@ class Api::V1::ProjectsController < ApplicationController
     end
   end
 
+  def remove_user
+    project = Project.find(params[:project_id])
+    user = User.find(params[:user_id])
+
+    # Check if the user is actually assigned to the project
+    if project.users.include?(user)
+      # Assuming you have a join model `Assignment` between Project and User
+      project.assignments.find_by(user: user)&.destroy
+      render json: { message: "User removed from project successfully" }
+    else
+      render json: { error: "User is not assigned to this project" }, status: :unprocessable_entity
+    end
+  end
+
 
   def task_breakdown
     tasks = @project.tasks
@@ -68,16 +82,24 @@ class Api::V1::ProjectsController < ApplicationController
       {
         task: task.name,
         duration: "#{task.duration} hours",
-        time_frame: "#{task.start_time} - #{task.end_time}"
+        time_frame: "#{task.start_time} - #{task.end_time}",
+        description: task.description,
+        start_time: task.start_time,
+        end_time: task.end_time,
+        id: task.id
       }
     end
     total_time = tasks.sum(&:duration)
-    render json: { tasks: task_summary, total_time: total_time }
+    render json: { tasks: task_summary, total_time: total_time, project_name: @project.name }
   end
 
   private
 
   def set_project
     @project = Project.find_by(uuid: params[:id])
+  end
+
+  def project_params
+    params.require(:project).permit(:name, :start_date, :duration_day, :duration_timeframe)
   end
 end
