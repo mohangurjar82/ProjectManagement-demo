@@ -4,16 +4,14 @@ class JsonWebToken
   JWT_SECRET = Rails.application.credentials.jwt_secret_key || ENV['JWT_SECRET_KEY']
 
   # Encode a payload into a JWT
-  def self.encode(payload, exp = 24.hours.from_now)
-    payload[:exp] = exp.to_i
-    JWT.encode(payload, JWT_SECRET, 'HS256')
+  def self.encode(payload)
+    JWT.encode(payload, JWT_SECRET)
   end
-
-  # Decode a JWT into its payload
+  # Decode the JWT token
   def self.decode(token)
-    decoded = JWT.decode(token, JWT_SECRET, true, algorithm: 'HS256')[0]
-    HashWithIndifferentAccess.new(decoded)
+    decoded = JWT.decode(token, JWT_SECRET, true, algorithm: 'HS256')
+    decoded.first
   rescue JWT::DecodeError => e
-    raise StandardError, "Invalid token: #{e.message}"
+    nil
   end
 end

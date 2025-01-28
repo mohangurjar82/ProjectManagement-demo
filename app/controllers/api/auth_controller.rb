@@ -24,7 +24,7 @@ class Api::AuthController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation,:role)
   end
 
    def user_response(user)
@@ -32,7 +32,10 @@ class Api::AuthController < ApplicationController
       id: user.id,
       name: user.name,
       email: user.email,
-      created_at: user.created_at
+      created_at: user.created_at,
+      role: user.role,
+      uuid: user.uuid
+
     }
   end
 end

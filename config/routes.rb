@@ -7,11 +7,15 @@ Rails.application.routes.draw do
         member do
           get :projects
         end
+        collection do
+          get :assigned_users
+        end
       end
 
       resources :projects, only: [:index, :show] do
         collection do
           get :active
+          delete :remove_user
         end
         member do
           get :task_breakdown

@@ -7,8 +7,16 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def projects
-    @projects = @user.projects
-    render json: @projects
+    @projects = @user.projects.includes(:tasks)
+    render json: @projects, include: [:tasks]
+  end
+
+  def assigned_users
+    project = Project.find(params[:project_id])
+    all_users = User.where.not(role: 'admin')
+    assigned_users = project.users
+    available_users = all_users.reject { |user| assigned_users.include?(user) }
+    render json: available_users
   end
 
   private
