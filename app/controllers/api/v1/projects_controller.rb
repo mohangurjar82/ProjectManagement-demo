@@ -1,5 +1,5 @@
 class Api::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :task_breakdown]
+  before_action :set_project, only: [:show, :task_breakdown, :update, :destroy]
 
   def index
     @projects = Project.all

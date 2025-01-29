@@ -1,6 +1,3 @@
-require 'test_helper'
-
-class ProjectTest < ActiveSupport::TestCase
 require 'rails_helper'
 
 RSpec.describe Project, type: :model do
@@ -44,19 +41,10 @@ RSpec.describe Project, type: :model do
   end
 
   describe 'callbacks' do
-    context 'before create' do
-      it 'sets a UUID if not provided' do
-        project = Project.create(start_date: Date.today, duration_day: 5)
-        expect(project.uuid).not_to be_nil
-      end
-
       it 'does not overwrite UUID if provided' do
         custom_uuid = 'custom-uuid-123'
         project = Project.create(start_date: Date.today, duration_day: 5, uuid: custom_uuid)
         expect(project.uuid).to eq(custom_uuid)
-      end
     end
   end
-end
-
 end

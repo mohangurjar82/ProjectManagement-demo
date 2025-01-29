@@ -5,6 +5,9 @@ class Project < ApplicationRecord
   before_create :set_uuid
   scope :active, -> { where('start_date <= ? AND start_date + duration_day >= ?', Date.today, Date.today) }
 
+
+  validates :name , presence: true
+
   def active?
     start_date <= Date.today && end_date >= Date.today
   end
@@ -16,7 +19,6 @@ class Project < ApplicationRecord
   private
 
   def set_uuid
-    # Generate a UUID and set it for the 'uuid' attribute
     self.uuid ||= SecureRandom.uuid
   end
 end

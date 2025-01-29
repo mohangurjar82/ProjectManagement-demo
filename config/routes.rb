@@ -12,7 +12,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :projects, only: [:index, :show] do
+      resources :projects do
         collection do
           get :active
           delete :remove_user
